@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+
+<div class="form-container">
+    <h2 class="text-center mb-20">Register</h2>
+    <% if (locals.error_msg) { %>
+        <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <%= error_msg %>
+        </div>
+    <% } %>
+    <form action="/auth/register" method="POST">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="adminCode">Admin Secret Code (Optional)</label>
+            <input type="password" id="adminCode" name="adminCode" class="form-control" placeholder="Only for administrators">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+    </form>
+    <p class="mt-20 text-center">Already have an account? <a href="/auth/login" style="color: var(--primary-color);">Login here</a></p>
+</div>
+
+<%- include('../partials/footer') %>

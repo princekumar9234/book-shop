@@ -1,0 +1,22 @@
+<header>
+    <div class="container navbar">
+        <a href="/" class="logo">BookStore</a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/books">Books</a></li>
+                <% if (user) { %>
+                    <li><a href="/cart">Cart <i class="fas fa-shopping-cart"></i></a></li>
+                    <li><a href="/orders">My Orders</a></li>
+                    <% if (user.role === 'admin') { %>
+                        <li><a href="/admin">Admin Dashboard</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.9rem;">Logout</a></li>
+                <% } else { %>
+                    <li><a href="/auth/login">Login</a></li>
+                    <li><a href="/auth/register" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.9rem;">Register</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+</header>

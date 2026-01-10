@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<h2 class="mb-20">Checkout</h2>
+
+<div style="display: flex; gap: 30px; flex-wrap: wrap;">
+    <div style="flex: 2; min-width: 300px;">
+        <div class="form-container" style="margin: 0; max-width: none;">
+            <h3 class="mb-20">Shipping Information</h3>
+            <form action="/orders/place" method="POST">
+                <div class="form-group">
+                    <label for="shippingAddress">Full Address</label>
+                    <textarea id="shippingAddress" name="shippingAddress" class="form-control" rows="4" required placeholder="Enter your full shipping address..."></textarea>
+                </div>
+                <!-- Payment Gateway Placeholder -->
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <div style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="radio" name="payment" checked> 
+                            <span style="margin-left: 10px;">Cash on Delivery (COD)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-success" style="width: 100%; font-size: 1.1rem; padding: 15px;">Place Order</button>
+            </form>
+        </div>
+    </div>
+    
+    <div style="flex: 1; min-width: 300px;">
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h3 class="mb-20">Order Summary</h3>
+            <% cart.items.forEach(item => { %>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                    <span><%= item.book.title %> (x<%= item.quantity %>)</span>
+                    <span>$<%= (item.quantity * item.book.price).toFixed(2) %></span>
+                </div>
+            <% }) %>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; font-weight: bold; font-size: 1.2rem; padding-top: 10px; border-top: 2px solid #eee;">
+                <span>Total</span>
+                <span>$<%= total.toFixed(2) %></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
