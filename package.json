@@ -2,26 +2,34 @@
   "name": "box",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "seed": "node seed.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/princekumar9234/book-shop.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/princekumar9234/book-shop/issues"
+  },
+  "homepage": "https://github.com/princekumar9234/book-shop#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "connect-mongo": "^6.0.0",
     "dotenv": "^17.2.3",
-    "ejs": "^3.1.10",
+    "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.18.2",
-    "method-override": "^3.0.0",
-    "mongoose": "^9.1.2",
-    "multer": "^2.0.2"
+    "mongoose": "^9.1.4",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.11",
+    "path": "^0.12.7"
   }
 }

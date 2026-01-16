@@ -1,0 +1,154 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Admin Control Panel</h1>
+        <form action="/admin/seed-jobs" method="POST">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Seed Sample Jobs</button>
+        </form>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stat-card glass">
+            <h2><%= users.length %></h2>
+            <p>Total Users</p>
+        </div>
+        <div class="stat-card glass">
+            <h2><%= jobs.length %></h2>
+            <p>Total Job Postings</p>
+        </div>
+        <div class="stat-card glass">
+            <h2><%= applications.length %></h2>
+            <p>Total Applications</p>
+        </div>
+    </div>
+
+    <!-- User Management Section -->
+    <div class="glass" style="padding: 2rem; margin-bottom: 3rem;">
+        <h3 style="margin-bottom: 1.5rem;">User Management</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Registered</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(u => { %>
+                        <tr>
+                            <td><%= u.name %></td>
+                            <td><%= u.email %></td>
+                            <td><span class="tag"><%= u.role %></span></td>
+                            <td><%= u.createdAt.toDateString() %></td>
+                            <td>
+                                <% if (u.id !== user.id) { %>
+                                    <form action="/admin/users/<%= u.id %>/delete" method="POST" onsubmit="return confirm('Delete user and all their data?')">
+                                        <button type="submit" style="background: none; border: none; color: var(--danger); cursor: pointer;"><i class="fas fa-trash"></i> Delete</button>
+                                    </form>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Application Management Section -->
+    <div id="applications" class="glass" style="padding: 2rem; margin-bottom: 3rem;">
+        <h3 style="margin-bottom: 1.5rem;">Global Application Management</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Status</th>
+                        <th>Resume</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% applications.forEach(app => { %>
+                        <tr>
+                            <td>
+                                <strong><%= app.applicant ? app.applicant.name : 'Deleted User' %></strong><br>
+                                <small><%= app.applicant ? app.applicant.email : '' %></small>
+                            </td>
+                            <td><%= app.job ? app.job.title : 'Deleted Job' %></td>
+                            <td><%= app.job ? app.job.company : '-' %></td>
+                            <td>
+                                <% 
+                                    let statusClass = 'tag-warning';
+                                    if (app.status === 'Accepted') statusClass = 'tag-success';
+                                    if (app.status === 'Rejected') statusClass = 'tag-danger';
+                                    if (app.status === 'Reviewed') statusClass = 'tag-info';
+                                %>
+                                <span class="tag <%= statusClass %>">
+                                    <%= app.status %>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/uploads/<%= app.resume %>" target="_blank" style="color: var(--primary-color);">
+                                    <i class="fas fa-file-pdf"></i> View
+                                </a>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <form action="/applications/<%= app._id %>/status" method="POST">
+                                        <input type="hidden" name="status" value="Accepted">
+                                        <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: var(--success);">Accept</button>
+                                    </form>
+                                    <form action="/applications/<%= app._id %>/status" method="POST">
+                                        <input type="hidden" name="status" value="Rejected">
+                                        <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: var(--danger);">Reject</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Job Management Section -->
+    <div class="glass" style="padding: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">All Job Postings</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Employer</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% jobs.forEach(job => { %>
+                        <tr>
+                            <td><strong><%= job.title %></strong></td>
+                            <td><%= job.employer ? job.employer.name : 'Deleted User' %></td>
+                            <td><%= job.category %></td>
+                            <td><%= job.status %></td>
+                            <td>
+                                <form action="/jobs/<%= job._id %>/delete" method="POST" onsubmit="return confirm('Delete this job?')">
+                                    <button type="submit" style="background: none; border: none; color: var(--danger); cursor: pointer;"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

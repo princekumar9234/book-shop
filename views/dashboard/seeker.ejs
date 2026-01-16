@@ -1,0 +1,133 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <!-- LinkedIn Style Profile Card -->
+    <div class="glass profile-card">
+        <div class="profile-banner"></div>
+        <div class="profile-avatar-container">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <a href="/dashboard/profile" class="btn btn-outline" style="margin-bottom: 20px;"><i class="fas fa-edit"></i> Edit Profile</a>
+        </div>
+        <div class="profile-info-section">
+            <h2><%= user.name %></h2>
+            <p class="profile-headline"><%= (user.profile && user.profile.bio) ? user.profile.bio.substring(0, 100) + '...' : 'Add a headline to your profile' %></p>
+            <div style="display: flex; gap: 15px; color: var(--text-muted); font-size: 0.9rem;">
+                <span><i class="fas fa-envelope"></i> <%= user.email %></span>
+                <% if (user.profile && user.profile.education) { %>
+                    <span><i class="fas fa-university"></i> <%= user.profile.education %></span>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="glass section-card">
+        <div class="section-header">
+            <h3>About</h3>
+        </div>
+        <p style="color: var(--text-main); line-height: 1.8;">
+            <%= (user.profile && user.profile.bio) ? user.profile.bio : 'No bio added yet. Tell employers about yourself!' %>
+        </p>
+    </div>
+
+    <!-- Experience & Education in 2 Columns -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="glass section-card" style="margin-bottom: 0;">
+            <div class="section-header">
+                <h3>Experience</h3>
+            </div>
+            <% if (user.profile && user.profile.experience) { %>
+                <div class="list-item">
+                    <div class="item-icon"><i class="fas fa-briefcase"></i></div>
+                    <div class="item-details">
+                        <p class="subtitle"><%= user.profile.experience %></p>
+                    </div>
+                </div>
+            <% } else { %>
+                <p class="text-muted">No experience listed.</p>
+            <% } %>
+        </div>
+
+        <div class="glass section-card" style="margin-bottom: 0;">
+            <div class="section-header">
+                <h3>Education</h3>
+            </div>
+            <% if (user.profile && user.profile.education) { %>
+                <div class="list-item">
+                    <div class="item-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="item-details">
+                        <p class="subtitle"><%= user.profile.education %></p>
+                    </div>
+                </div>
+            <% } else { %>
+                <p class="text-muted">No education listed.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="glass section-card">
+        <div class="section-header">
+            <h3>Skills</h3>
+        </div>
+        <div class="skills-container">
+            <% if (user.profile && user.profile.skills && user.profile.skills.length > 0) { %>
+                <% user.profile.skills.forEach(skill => { %>
+                    <span class="skill-pill"><%= skill %></span>
+                <% }) %>
+            <% } else { %>
+                <p class="text-muted">No skills added yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Applied Jobs Section (Original Dashboard Content) -->
+    <div class="glass" style="padding: 2rem; margin-top: 3rem;">
+        <h3 style="margin-bottom: 1.5rem;">Your Job Applications</h3>
+        <% if (applications && applications.length > 0) { %>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% applications.forEach(app => { %>
+                            <tr>
+                                <td><strong><%= app.job.title %></strong></td>
+                                <td><%= app.job.company %></td>
+                                <td><%= app.appliedAt.toDateString() %></td>
+                                <td>
+                                    <% 
+                                        let statusClass = 'tag-warning';
+                                        if (app.status === 'Accepted') statusClass = 'tag-success';
+                                        if (app.status === 'Rejected') statusClass = 'tag-danger';
+                                        if (app.status === 'Reviewed') statusClass = 'tag-info';
+                                    %>
+                                    <span class="tag <%= statusClass %>">
+                                        <%= app.status %>
+                                    </span>
+                                </td>
+                                <td><a href="/jobs/<%= app.job._id %>" style="color: var(--primary-color);">View Job</a></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div style="text-align: center; padding: 2rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">You haven't applied for any jobs yet.</p>
+                <a href="/jobs" class="btn btn-primary">Browse Jobs</a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

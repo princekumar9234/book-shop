@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<div class="container" style="max-width: 800px;">
+    <div class="glass" style="padding: 3rem;">
+        <h2 style="margin-bottom: 2rem;">Post a New Job</h2>
+
+        <% if (locals.error) { %>
+            <div class="error-msg"><%= error %></div>
+        <% } %>
+
+        <form action="/jobs" method="POST">
+            <div class="form-group">
+                <label for="title">Job Title</label>
+                <input type="text" name="title" id="title" class="input-field" placeholder="e.g. Senior Software Engineer" value="<%= formData.title || '' %>" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" name="company" id="company" class="input-field" placeholder="e.g. Google" value="<%= formData.company || '' %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" name="location" id="location" class="input-field" placeholder="e.g. Remote, NY" value="<%= formData.location || '' %>" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="form-group">
+                    <label for="type">Job Type</label>
+                    <select name="type" id="type" class="input-field" required>
+                        <% ['Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship'].forEach(t => { %>
+                            <option value="<%= t %>" <%= formData.type === t ? 'selected' : '' %>><%= t %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select name="category" id="category" class="input-field" required>
+                        <% ['Technology', 'Marketing', 'Finance', 'Design', 'Customer Service'].forEach(c => { %>
+                            <option value="<%= c %>" <%= formData.category === c ? 'selected' : '' %>><%= c %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="form-group">
+                    <label for="salary">Salary Range</label>
+                    <input type="text" name="salary" id="salary" class="input-field" placeholder="e.g. $80,000 - $120,000" value="<%= formData.salary || '' %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience Level</label>
+                    <input type="text" name="experience" id="experience" class="input-field" placeholder="e.g. 2-5 years" value="<%= formData.experience || '' %>" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Job Description</label>
+                <textarea name="description" id="description" rows="6" class="input-field" placeholder="Detailed job description..." required><%= formData.description || '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="requirements">Requirements (comma separated)</label>
+                <textarea name="requirements" id="requirements" rows="3" class="input-field" placeholder="Node.js, React, MongoDB, Problem Solving" required><%= formData.requirements || '' %></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Post Job</button>
+                <a href="/dashboard" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

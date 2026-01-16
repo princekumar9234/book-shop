@@ -1,63 +1,73 @@
-# Online Book Store (Mini E-Commerce)
+# JobHub - Premium Job Portal Application
 
-A clear, responsive, and functional generic Online Book Store built with Node.js, Express, and MongoDB.
+JobHub is a modern, high-performance job portal web application built with Node.js, Express, and MongoDB. It features a premium LinkedIn-inspired design with real-time application tracking, interactive maps, and a powerful administrative control panel.
 
-## Features
-- **User Roles**: Admin (Manage Content) & Customer (Shop).
-- **Authentication**: Secure Login/Register with Password Hashing.
-- **Product Management**: Search, filter, and view book details.
-- **Shopping Cart**: Add, update, and remove items.
-- **Order System**: Checkout and Order History.
-- **Admin Dashboard**: Manage books and orders with visual stats.
+## 🚀 Key Features
 
-## Tech Stack
-- **Frontend**: HTML5, CSS3, EJS Templates
+- **LinkedIn-Inspired Profile**: Professional seeker dashboard with experience, education, and skills sections.
+
+- **Global Application Tracking**: Admin-only oversight to manage (Accept/Reject) all applications on the platform.
+
+- **Interactive Job Search**: Advanced filtering by location and category with a modern, icon-driven search bar.
+
+- **Live Maps Integration**: View the physical location of hiring companies directly on the job details page via Google Maps.
+- **Role-Based Access**: 
+
+  - **Admin**: Full control over users, jobs, and global applications.
+  - **Employer**: Post jobs and manage applicants for specific postings.
+  - **Job Seeker**: Create a professional profile and apply for jobs.
+- **One-Click Seeding**: Easy-to-use admin tools to populate the platform with 100+ sample jobs and applications.
+
+## 🛠️ Tech Stack
+
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Mongoose)
+- **Database**: MongoDB (via Mongoose)
+- **Session Management**: express-session with connect-mongo
+- **Frontend**: EJS Templating, Vanilla CSS (Glassmorphism design)
+- **File Uploads**: Multer (PDF Resume handling)
 
-## Setup & Run
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-2.  **Environment Variables**:
-    Create a `.env` file in the root (already created):
-    ```env
-    MONGO_URI=mongodb://localhost:27017/onlinebookstore
-    PORT=3000
-    SESSION_SECRET=your_secret_key
-    ```
-3.  **Seed Database** (Optional but recommended):
-    ```bash
-    npm run seed
-    ```
-4.  **Run Server**:
-    ```bash
-    npm start
-    # OR for development (requires nodemon installed globally or as dev dependency)
-    npm run dev
-    ```
-5.  **Access App**:
-    Open [http://localhost:3000](http://localhost:3000)
+## 📦 Installation & Setup
 
-## Sample Users
-| Role | Email | Password |
-|------|-------|----------|
-| **Admin** | admin@example.com | password123 |
-| **Customer** | john@example.com | password123 |
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd box
 
-> [!TIP]
-> **To Create a New Admin Account**: Go to the **Register** page and use the Secret Admin Code: `ADMIN123`.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Folder Structure
-- `config/`: DB connection
-- `models/`: Mongoose Schemas (User, Book, Cart, Order)
-- `routes/`: Express Routes
-- `views/`: EJS Templates
-- `public/`: Static Assets (CSS, Images)
-- `middleware/`: Auth Middleware
+3. **Configure Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   PORT=3000
+   MONGODB_URI=your_mongodb_connection_string
+   SESSION_SECRET=your_secret_key
+   NODE_ENV=development
+   ```
 
-## Future Enhancements
-- Payment Gateway Integration (Stripe/PayPal)
-- User Reviews & Ratings
-- Wishlist Functionality
+4. **Run the Application**
+   ```bash
+   npm run dev
+   ```
+
+## 🧪 Seeding Demo Data
+
+Pre-populate the application with users and jobs:
+
+- **Create Admin Account**: `node seedAdmin.js` (Credentials: `admin@jobhub.com` / `adminpassword123`)
+- **Seed 100 Jobs**: `node seed100Jobs.js`
+- **Seed Dashboard Data**: `node seedApplications.js`
+
+## 📂 Project Structure
+
+- `/controllers`: Backend logic for auth, jobs, and admin.
+- `/models`: Mongoose schemas for Users, Jobs, and Applications.
+- `/public`: Static CSS and assets.
+- `/routes`: Application routing.
+- `/views`: EJS templates (Dashboards, Auth, Job Listings).
+- `/uploads`: Storage for seeker resumes.
+
+---
+Built with ❤️ for a seamless hiring experience.

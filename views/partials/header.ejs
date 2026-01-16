@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Book Store</title>
+    <title>JobHub - Find Your Dream Career</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <%- include('navbar') %>
-    <div class="container">
+    <nav>
+        <a href="/" class="logo">
+            <i class="fas fa-briefcase"></i> JobHub
+        </a>
+        <ul class="nav-links">
+            <li><a href="/jobs">Browse Jobs</a></li>
+            <% if (locals.user && (user.role === 'admin' || user.role === 'employer')) { %>
+                <li><a href="/jobs/create">Post Job</a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin#applications">Applications</a></li>
+                <% } else { %>
+                    <li><a href="/dashboard">Applications</a></li>
+                <% } %>
+            <% } %>
+        </ul>
+        <div class="nav-auth">
+            <% if (locals.user) { %>
+                <a href="/dashboard" class="btn btn-outline">Dashboard</a>
+                <a href="/auth/logout" class="btn btn-primary">Logout</a>
+            <% } else { %>
+                <a href="/auth/login" class="btn btn-outline">Login</a>
+                <a href="/auth/register" class="btn btn-primary">Get Started</a>
+            <% } %>
+        </div>
+    </nav>

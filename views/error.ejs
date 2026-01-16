@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
 
-<div style="text-align: center; padding: 50px;">
-    <h1 style="color: var(--danger); font-size: 3rem;">Oops!</h1>
-    <p style="font-size: 1.5rem; margin: 20px 0;"><%= error || 'Something went wrong.' %></p>
+<div class="container" style="text-align: center; padding: 6rem 1rem;">
+    <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: var(--danger); margin-bottom: 2rem;"></i>
+    <h1>Something went wrong</h1>
+    <p style="color: var(--text-muted); margin: 1.5rem 0 2rem;"><%= locals.message || 'An unexpected error occurred.' %></p>
     <a href="/" class="btn btn-primary">Go Home</a>
 </div>
 

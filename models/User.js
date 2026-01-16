@@ -1,35 +1,46 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Please add a name']
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: [true, 'Please add an email'],
+        unique: true,
+        match: [
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            'Please add a valid email'
+        ]
     },
     password: {
         type: String,
-        required: true
+        required: [true, 'Please add a password'],
+        minlength: 6,
+        select: false
     },
     role: {
         type: String,
-        enum: ['customer', 'admin'],
-        default: 'customer'
+        enum: ['job_seeker', 'employer', 'admin'],
+        default: 'job_seeker'
     },
-    resetOTP: String,
-    resetOTPExpires: Date,
+    profile: {
+        bio: String,
+        skills: [String],
+        experience: String,
+        education: String,
+        resume: String // file path
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 });
 
-// Password Hash Middleware
-UserSchema.pre('save', async function (next) {
+// Encrypt password using bcrypt
+userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         next();
     }
@@ -37,9 +48,9 @@ UserSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Compare Password Method
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+// Match user entered password to hashed password in database
+userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);

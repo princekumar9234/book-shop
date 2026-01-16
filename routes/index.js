@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const Book = require('../models/Book');
+const Job = require('../models/Job');
 
-// Home Page
+// @desc    Landing page
+// @route   GET /
 router.get('/', async (req, res) => {
     try {
-        const books = await Book.find().limit(6).sort({ createdAt: -1 });
-        res.render('index', { books });
+        const jobs = await Job.find({ status: 'Open' }).sort('-createdAt').limit(6);
+        res.render('index', { jobs });
     } catch (err) {
-        console.error(err);
-        res.render('error', { error: 'Server Error' });
+        res.status(500).render('error', { message: 'Server Error' });
     }
 });
 

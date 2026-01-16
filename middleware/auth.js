@@ -1,15 +1,20 @@
-const ensureAuthenticated = (req, res, next) => {
+// Protect routes
+exports.protect = (req, res, next) => {
     if (req.session.user) {
-        return next();
+        next();
+    } else {
+        res.redirect('/auth/login');
     }
-    res.redirect('/auth/login');
 };
 
-const ensureAdmin = (req, res, next) => {
-    if (req.session.user && req.session.user.role === 'admin') {
-        return next();
-    }
-    res.status(403).send('Access Denied: Pros Only (Admins)');
+// Grant access to specific roles
+exports.authorize = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.session.user.role)) {
+            return res.status(403).render('error', {
+                message: `User role ${req.session.user.role} is not authorized to access this route`
+            });
+        }
+        next();
+    };
 };
-
-module.exports = { ensureAuthenticated, ensureAdmin };

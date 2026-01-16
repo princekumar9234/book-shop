@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "keys": [
+    "MongoStore",
+    "createKrupteinAdapter",
+    "createWebCryptoAdapter",
+    "default"
+  ]
+}

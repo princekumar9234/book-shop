@@ -1,37 +1,55 @@
 <%- include('partials/header') %>
 
-<section style="text-align: center; padding: 50px 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0 -20px 40px -20px; border-radius: 0 0 50% 50%/20px;">
-    <h1 style="font-size: 3rem; margin-bottom: 20px; color: var(--secondary-color);">Welcome to BookStore</h1>
-    <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">Find your next favorite book today.</p>
-    <a href="/books" class="btn btn-primary" style="padding: 15px 30px; font-size: 1.1rem;">Browse Collection</a>
+<section class="hero">
+    <h1>Find Your Next Big Opportunity</h1>
+    <p>Discover thousands of job openings from world-class companies and take your career to the next level.</p>
+    
+    <form action="/jobs" method="GET" class="search-container glass">
+        <div style="flex: 1; position: relative;">
+            <i class="fas fa-map-marker-alt" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <input type="text" name="location" class="search-input" placeholder="Location (e.g. London)" style="padding-left: 40px; border-right: 1px solid #e2e8f0; border-radius: 0; width: 100%;">
+        </div>
+        <div style="flex: 1; position: relative;">
+            <i class="fas fa-briefcase" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <select name="category" class="search-input" style="padding-left: 40px; border: none; background: white; width: 100%;">
+                <option value="">All Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Finance">Finance</option>
+                <option value="Design">Design</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Search Jobs</button>
+    </form>
 </section>
 
-<h2 class="text-center mb-20">Recent Additions</h2>
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Recently Posted Jobs</h2>
+        <a href="/jobs" style="color: var(--primary-color); font-weight: 600;">View all jobs &rarr;</a>
+    </div>
 
-<div class="book-grid">
-    <% if (books.length > 0) { %>
-        <% books.forEach(book => { %>
-            <div class="book-card">
-                <div class="book-image">
-                    <img src="<%= book.image %>" alt="<%= book.title %>" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title"><%= book.title %></h3>
-                    <p class="book-author">by <%= book.author %></p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <span class="book-price">$<%= book.price.toFixed(2) %></span>
-                        <a href="/books/<%= book._id %>" class="btn btn-secondary" style="font-size: 0.9rem;">View Details</a>
+    <div class="jobs-grid">
+        <% if (jobs && jobs.length > 0) { %>
+            <% jobs.forEach(job => { %>
+                <div class="job-card glass">
+                    <span class="company"><%= job.company %></span>
+                    <h3><%= job.title %></h3>
+                    <div class="meta">
+                        <span><i class="fas fa-map-marker-alt"></i> <%= job.location %></span>
+                        <span><i class="fas fa-clock"></i> <%= job.type %></span>
                     </div>
+                    <div class="tags">
+                        <span class="tag"><%= job.category %></span>
+                        <span class="tag"><%= job.salary %></span>
+                    </div>
+                    <a href="/jobs/<%= job._id %>" class="btn btn-outline" style="margin-top: 1.5rem; text-align: center;">View Details</a>
                 </div>
-            </div>
-        <% }) %>
-    <% } else { %>
-        <p class="text-center">No books found.</p>
-    <% } %>
-</div>
-
-<div class="text-center">
-    <a href="/books" class="btn btn-primary">View All Books</a>
+            <% }) %>
+        <% } else { %>
+            <p>No jobs available at the moment.</p>
+        <% } %>
+    </div>
 </div>
 
 <%- include('partials/footer') %>

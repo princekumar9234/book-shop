@@ -1,0 +1,87 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin-top: 2rem;">
+        <div>
+            <div class="glass" style="padding: 2.5rem; margin-bottom: 2rem;">
+                <span class="company" style="font-size: 1.1rem; color: var(--primary-color); font-weight: 700;"><%= job.company %></span>
+                <h1 style="margin: 0.5rem 0 1.5rem;"><%= job.title %></h1>
+                
+                <div class="meta" style="margin-bottom: 2rem;">
+                    <span style="margin-right: 1.5rem;"><i class="fas fa-map-marker-alt"></i> <%= job.location %></span>
+                    <span style="margin-right: 1.5rem;"><i class="fas fa-clock"></i> <%= job.type %></span>
+                    <span style="margin-right: 1.5rem;"><i class="fas fa-money-bill-wave"></i> <%= job.salary %></span>
+                </div>
+
+                <div style="margin-bottom: 2.5rem;">
+                    <h3 style="margin-bottom: 1rem;">Description</h3>
+                    <p style="white-space: pre-wrap; color: var(--text-main);"><%= job.description %></p>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Requirements</h3>
+                    <ul style="padding-left: 1.5rem; color: var(--text-main); margin-bottom: 2rem;">
+                        <% job.requirements.forEach(req => { %>
+                            <li style="margin-bottom: 0.5rem;"><%= req %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+
+                <% if (job.location && job.location.toLowerCase() !== 'remote') { %>
+                    <div style="margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1rem;"><i class="fas fa-map-marked-alt"></i> Company Location</h3>
+                        <div class="glass" style="height: 300px; width: 100%; overflow: hidden; border-radius: 12px;">
+                            <iframe 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                style="border:0" 
+                                src="https://maps.google.com/maps?q=<%= encodeURIComponent(job.location + ' ' + job.company) %>&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <aside>
+            <div class="glass" style="padding: 2rem; position: sticky; top: 120px;">
+                <h3 style="margin-bottom: 1.5rem;">Apply for this position</h3>
+                
+                <% if (!locals.user) { %>
+                    <p style="margin-bottom: 1.5rem; color: var(--text-muted);">You need to be logged in to apply.</p>
+                    <a href="/auth/login" class="btn btn-primary" style="width: 100%; text-align: center;">Login to Apply</a>
+                <% } else if (user.role === 'employer') { %>
+                    <p style="color: var(--text-muted);">Employers cannot apply for jobs.</p>
+                <% } else if (locals.hasApplied) { %>
+                    <div style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-check-circle"></i> Already Applied
+                    </div>
+                <% } else { %>
+                    <% if (locals.error) { %>
+                        <div class="error-msg"><%= error %></div>
+                    <% } %>
+                    <form action="/applications/<%= job._id %>" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="resume">Upload Resume (PDF)</label>
+                            <input type="file" name="resume" id="resume" class="input-field" required accept=".pdf">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                    </form>
+                <% } %>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e2e8f0;">
+                
+                <h4 style="margin-bottom: 1rem;">Job Overview</h4>
+                <div style="font-size: 0.9rem; color: var(--text-muted);">
+                    <p style="margin-bottom: 0.5rem;"><i class="fas fa-calendar-alt"></i> Posted on: <%= job.createdAt.toDateString() %></p>
+                    <p style="margin-bottom: 0.5rem;"><i class="fas fa-tag"></i> Category: <%= job.category %></p>
+                    <p style="margin-bottom: 0.5rem;"><i class="fas fa-briefcase"></i> Experience: <%= job.experience %></p>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

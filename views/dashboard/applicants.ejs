@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div style="margin-bottom: 2rem;">
+        <a href="/dashboard" style="color: var(--primary-color); text-decoration: none;">&larr; Back to Dashboard</a>
+        <h1 style="margin-top: 1rem;">Applicants for: <%= job.title %></h1>
+    </div>
+
+    <div class="glass" style="padding: 2rem;">
+        <% if (applications && applications.length > 0) { %>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Applicant Name</th>
+                            <th>Email</th>
+                            <th>Resume</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% applications.forEach(app => { %>
+                            <tr>
+                                <td><%= app.applicant.name %></td>
+                                <td><%= app.applicant.email %></td>
+                                <td><a href="/uploads/<%= app.resume %>" target="_blank" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;"><i class="fas fa-file-pdf"></i> View PDF</a></td>
+                                <td>
+                                    <form action="/applications/<%= app._id %>/status" method="POST">
+                                        <select name="status" onchange="this.form.submit()" class="input-field" style="padding: 0.3rem; width: auto;">
+                                            <option value="Pending" <%= app.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Reviewed" <%= app.status === 'Reviewed' ? 'selected' : '' %>>Reviewed</option>
+                                            <option value="Accepted" <%= app.status === 'Accepted' ? 'selected' : '' %>>Accepted</option>
+                                            <option value="Rejected" <%= app.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>
+                                     <% 
+                                        let statusClass = 'tag-warning';
+                                        if (app.status === 'Accepted') statusClass = 'tag-success';
+                                        if (app.status === 'Rejected') statusClass = 'tag-danger';
+                                        if (app.status === 'Reviewed') statusClass = 'tag-info';
+                                     %>
+                                     <span class="tag <%= statusClass %>">
+                                        <%= app.status %>
+                                    </span>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <p style="text-align: center; color: var(--text-muted); padding: 2rem;">No applications yet for this job.</p>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
