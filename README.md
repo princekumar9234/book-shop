@@ -57,6 +57,16 @@ A clear, responsive, and functional generic Online Book Store built with Node.js
 - `public/`: Static Assets (CSS, Images)
 - `middleware/`: Auth Middleware
 
+## Deployment
+1. **Database**: Use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a production database.
+2. **Environment Variables**: On Render (or your hosting provider), set the following environment variables:
+   - `MONGO_URI`: Your MongoDB Atlas connection string.
+   - `SESSION_SECRET`: A long, random string.
+   - `NODE_ENV`: Set to `production`.
+3. **Build & Start**:
+   - Build Command: `npm install`
+   - Start Command: `node server.js`
+
 ## Future Enhancements
 - Payment Gateway Integration (Stripe/PayPal)
 - User Reviews & Ratings
