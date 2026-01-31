@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+
+<div class="form-container">
+    <h2 class="text-center mb-20">Login</h2>
+    <% if (locals.error_msg) { %>
+        <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <%= error_msg %>
+        </div>
+    <% } %>
+    <% if (locals.success_msg) { %>
+        <div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <%= success_msg %>
+        </div>
+    <% } %>
+    <form action="/auth/login" method="POST">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+    </form>
+    <p class="mt-20 text-center">
+        <a href="/auth/forgot-password" style="font-size: 0.9rem; color: #666;">Forgot Password?</a>
+    </p>
+    <p class="mt-2 text-center">Don't have an account? <a href="/auth/register" style="color: var(--primary-color);">Register here</a></p>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,9 @@
+book store
+start :-node server.js
+admin 
+gmail:- admin@example.com
+pass:-password123
+
+ user
+gmail:-skj@gmail.com
+pass:-skj

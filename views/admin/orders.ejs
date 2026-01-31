@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<h2 class="mb-20">Manage Orders</h2>
+
+<div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow-x: auto;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach(order => { %>
+                <tr>
+                    <td style="font-family: monospace;"><%= order._id %></td>
+                    <td>
+                        <% if (order.user) { %>
+                            <%= order.user.name %><br>
+                            <small><%= order.user.email %></small>
+                        <% } else { %>
+                            <span style="color: #999;">User Deleted</span>
+                        <% } %>
+                    </td>
+                    <td>$<%= order.totalAmount.toFixed(2) %></td>
+                    <td>
+                        <form action="/admin/orders/<%= order._id %>?_method=PUT" method="POST">
+                            <select name="status" onchange="this.form.submit()" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
+                                <% ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].forEach(status => { %>
+                                    <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status %></option>
+                                <% }) %>
+                            </select>
+                        </form>
+                    </td>
+                    <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                    <td>
+                        <!-- View Order Details -->
+                        <a href="/admin/orders/<%= order._id %>" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;">View</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../partials/footer') %>

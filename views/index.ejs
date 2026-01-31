@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+
+<section style="text-align: center; padding: 50px 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0 -20px 40px -20px; border-radius: 0 0 50% 50%/20px;">
+    <h1 style="font-size: 3rem; margin-bottom: 20px; color: var(--secondary-color);">Welcome to BookStore</h1>
+    <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">Find your next favorite book today.</p>
+    <a href="/books" class="btn btn-primary" style="padding: 15px 30px; font-size: 1.1rem;">Browse Collection</a>
+</section>
+
+<h2 class="text-center mb-20">Recent Additions</h2>
+
+<div class="book-grid">
+    <% if (books.length > 0) { %>
+        <% books.forEach(book => { %>
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="<%= book.image %>" alt="<%= book.title %>" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title"><%= book.title %></h3>
+                    <p class="book-author">by <%= book.author %></p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <span class="book-price">$<%= book.price.toFixed(2) %></span>
+                        <a href="/books/<%= book._id %>" class="btn btn-secondary" style="font-size: 0.9rem;">View Details</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p class="text-center">No books found.</p>
+    <% } %>
+</div>
+
+<div class="text-center">
+    <a href="/books" class="btn btn-primary">View All Books</a>
+</div>
+
+<%- include('partials/footer') %>
