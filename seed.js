@@ -17,8 +17,8 @@ const seedData = async () => {
         // Create Admin
         const adminUser = new User({
             name: 'Admin User',
-            email: 'admin@example.com',
-            password: 'password123', // Will be hashed by pre-save hook
+            email: 'princechouhan9939@gmail.com',
+            password: '2008', // Will be hashed by pre-save hook
             role: 'admin'
         });
         await adminUser.save();
