@@ -10,7 +10,9 @@ const connectDB = require("./config/db");
 const app = express();
 
 // Connect Database
-connectDB();
+connectDB().then(() => {
+    require('./utils/ensureAdmin')();
+});
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
