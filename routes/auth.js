@@ -35,18 +35,19 @@ router.post('/register', async (req, res) => {
 // Login Logic
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const normalizedEmail = email ? email.toLowerCase() : '';
-    console.log(`Login attempt for: ${normalizedEmail}`);
+    const normalizedEmail = email ? email.trim().toLowerCase() : '';
+    console.log(`Login attempt for: '${normalizedEmail}'`);
     
     try {
         const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
-            console.log('User not found');
+            console.log(`User not found for email: '${normalizedEmail}'`);
             return res.render('auth/login', { error_msg: 'Invalid Credentials' });
         }
+        
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
-            console.log('Password mismatch');
+            console.log(`Password mismatch for user: ${user.email}`);
             return res.render('auth/login', { error_msg: 'Invalid Credentials' });
         }
         
@@ -58,14 +59,23 @@ router.post('/login', async (req, res) => {
             role: user.role
         };
         req.session.user = userSession;
-        
-        if (user.role === 'admin') {
-            res.redirect('/admin');
-        } else {
-            res.redirect('/');
-        }
+        console.log(`Session set for user: ${user.email} with role: ${user.role}`);
+
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return res.render('auth/login', { error_msg: 'Session Error' });
+            }
+            if (user.role === 'admin') {
+                console.log("Redirecting to /admin");
+                res.redirect('/admin');
+            } else {
+                console.log("Redirecting to /");
+                res.redirect('/');
+            }
+        });
     } catch (err) {
-        console.error(err);
+        console.error("Login Error:", err);
         res.render('auth/login', { error_msg: 'Server Error' });
     }
 });
