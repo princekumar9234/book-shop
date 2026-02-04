@@ -5,8 +5,12 @@ const Book = require('./models/Book');
 
 dotenv.config();
 
+// Connect first, then seed
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/onlinebookstore')
-    .then(() => console.log('MongoDB Connected for Seeding'))
+    .then(() => {
+        console.log('MongoDB Connected for Seeding');
+        seedData();
+    })
     .catch(err => console.log(err));
 
 const seedData = async () => {
@@ -72,5 +76,3 @@ const seedData = async () => {
         process.exit(1);
     }
 };
-
-seedData();
