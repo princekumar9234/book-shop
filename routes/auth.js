@@ -35,13 +35,18 @@ router.post('/register', async (req, res) => {
 // Login Logic
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    const normalizedEmail = email ? email.toLowerCase() : '';
+    console.log(`Login attempt for: ${normalizedEmail}`);
+    
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
+            console.log('User not found');
             return res.render('auth/login', { error_msg: 'Invalid Credentials' });
         }
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
+            console.log('Password mismatch');
             return res.render('auth/login', { error_msg: 'Invalid Credentials' });
         }
         
