@@ -19,13 +19,11 @@ const ensureAdminExists = async () => {
             await newAdmin.save();
             console.log('Default Admin created successfully.');
         } else {
-            console.log('Admin user check: Found.');
-            // Optional: Check if role is correct
-            if (existingAdmin.role !== 'admin') {
-                 existingAdmin.role = 'admin';
-                 await existingAdmin.save();
-                 console.log('Fixed Admin Role.');
-            }
+                console.log('Admin user found. Resetting password to default (2008)...');
+                existingAdmin.password = adminPassword; // Pre-save hook will hash it
+                existingAdmin.role = 'admin';
+                await existingAdmin.save();
+                console.log('Admin password reset successfully.');
         }
     } catch (err) {
         console.error('Error ensuring admin exists:', err.message);
