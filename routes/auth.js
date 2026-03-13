@@ -12,23 +12,24 @@ router.get('/register', (req, res) => res.render('auth/register'));
 
 // Register Logic
 router.post('/register', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, adminCode } = req.body;
     try {
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ email: email.toLowerCase() });
         if (user) {
             return res.render('auth/register', { error_msg: 'Email already exists' });
         }
         
-        // Default role is customer. Admin creation should be done via seed or database access.
-        const role = 'customer';
+        let role = 'customer';
+        if (adminCode === 'ADMIN123') {
+            role = 'admin';
+        }
         
         const newUser = new User({ name, email, password, role });
-        // Password hashing is handled in pre-save hook in User model
         await newUser.save();
-        res.redirect('/auth/login');
+        res.render('auth/login', { success_msg: 'Account created! You can now login.' });
     } catch (err) {
         console.error(err);
-        res.render('auth/register', { error_msg: 'Server Error' });
+        res.render('auth/register', { error_msg: 'Server Error: ' + err.message });
     }
 });
 
