@@ -30,6 +30,12 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 // Add to Cart
 router.post('/add', ensureAuthenticated, async (req, res) => {
     const { bookId, quantity } = req.body;
+    
+    // Prevent Admins from ordering
+    if (req.session.user && req.session.user.role === 'admin') {
+        return res.status(403).send('Admins cannot place orders. Please use a customer account.');
+    }
+
     try {
         let cart = await Cart.findOne({ user: req.session.user.id });
         if (!cart) {

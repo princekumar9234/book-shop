@@ -6,6 +6,9 @@ const { ensureAuthenticated } = require('../middleware/auth');
 
 // Checkout Page
 router.get('/checkout', ensureAuthenticated, async (req, res) => {
+    if (req.session.user && req.session.user.role === 'admin') {
+        return res.status(403).send('Admins cannot place orders.');
+    }
     try {
         const cart = await Cart.findOne({ user: req.session.user.id }).populate('items.book');
         if (!cart || cart.items.length === 0) {
@@ -26,6 +29,9 @@ router.get('/checkout', ensureAuthenticated, async (req, res) => {
 
 // Place Order
 router.post('/place', ensureAuthenticated, async (req, res) => {
+    if (req.session.user && req.session.user.role === 'admin') {
+        return res.status(403).send('Admins cannot place orders.');
+    }
     const { shippingAddress } = req.body;
     try {
         const cart = await Cart.findOne({ user: req.session.user.id }).populate('items.book');

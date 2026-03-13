@@ -20,13 +20,19 @@
             <p style="line-height: 1.8; margin-bottom: 30px;"><%= book.description %></p>
             
             <% if (user) { %>
-                <form action="/cart/add" method="POST" style="display: flex; gap: 10px; align-items: center;">
-                    <input type="hidden" name="bookId" value="<%= book._id %>">
-                    <input type="number" name="quantity" value="1" min="1" max="<%= book.stock > 0 ? book.stock : 1 %>" style="width: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
-                    <button type="submit" class="btn btn-primary" <%= book.stock === 0 ? 'disabled' : '' %> style="<%= book.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
-                        Add to Cart <i class="fas fa-cart-plus"></i>
-                    </button>
-                </form>
+                <% if (user.role !== 'admin') { %>
+                    <form action="/cart/add" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="hidden" name="bookId" value="<%= book._id %>">
+                        <input type="number" name="quantity" value="1" min="1" max="<%= book.stock > 0 ? book.stock : 1 %>" style="width: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button type="submit" class="btn btn-primary" <%= book.stock === 0 ? 'disabled' : '' %> style="<%= book.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
+                            Add to Cart <i class="fas fa-cart-plus"></i>
+                        </button>
+                    </form>
+                <% } else { %>
+                    <div style="background: #e7f3ff; padding: 15px; border-radius: 4px; border: 1px solid #b3d7ff; color: #004085;">
+                        <p><i class="fas fa-info-circle"></i> <strong>Admin View:</strong> You cannot place orders. Logout and use a Customer account to shop.</p>
+                    </div>
+                <% } %>
             <% } else { %>
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; border: 1px solid #e9ecef;">
                     <p>Please <a href="/auth/login" style="color: var(--primary-color); font-weight: bold;">Login</a> to purchase this book.</p>
