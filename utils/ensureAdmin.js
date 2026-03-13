@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const ensureAdminExists = async () => {
     try {
         const email = 'princechouhan9939@gmail.com';
-        const adminPassword = '2008';
+        const adminPassword = 'PRINCE@18';
         
         const existingAdmin = await User.findOne({ email });
         
@@ -19,7 +19,7 @@ const ensureAdminExists = async () => {
             await newAdmin.save();
             console.log('Default Admin created successfully.');
         } else {
-                console.log('Admin user found. Resetting password to default (2008)...');
+                console.log('Admin user found. Ensuring password is set to requested one...');
                 existingAdmin.password = adminPassword; // Pre-save hook will hash it
                 existingAdmin.role = 'admin';
                 await existingAdmin.save();

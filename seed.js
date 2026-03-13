@@ -22,7 +22,7 @@ const seedData = async () => {
         const adminUser = new User({
             name: 'Admin User',
             email: 'princechouhan9939@gmail.com',
-            password: '2008', // Will be hashed by pre-save hook
+            password: 'PRINCE@18', // Will be hashed by pre-save hook
             role: 'admin'
         });
         await adminUser.save();
